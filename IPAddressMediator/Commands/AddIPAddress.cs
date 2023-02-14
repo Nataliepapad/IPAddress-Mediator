@@ -1,4 +1,5 @@
-﻿using IPAddressMediator.Data;
+﻿using Azure.Core;
+using IPAddressMediator.Data;
 using IPAddressMediator.Entities;
 using MediatR;
 
@@ -6,27 +7,18 @@ namespace IPAddressMediator.Commands
 {
     public class AddIPAddress : IRequest<IPAddress>
     {
-        private readonly DataContext _dbContext;
+        public readonly IPAddress _ipAddress;
 
-        public AddIPAddress(DataContext dbContext)
+        public AddIPAddress(IPAddress ipAddress)
         {
-            _dbContext = dbContext;
-        }
-
-        private async Task AddIPAddressToDb(IPAddress model)
-        {
-            var ipAdrress = new IPAddress
+            _ipAddress = new IPAddress
             {
-                IP = model.IP,
-                CountryId = model.CountryId,
+                IP = ipAddress.IP,
+                CountryId = ipAddress.CountryId,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
-                Country = model.Country,
+                Country = ipAddress.Country,
             };
-
-            _dbContext.IPAddresses.Add(model);
-            await _dbContext.SaveChangesAsync();
-
         }
     }
 }

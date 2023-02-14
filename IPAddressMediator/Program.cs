@@ -26,7 +26,7 @@ namespace IPAddressMediator
 
             builder.Services.AddDbContext<DataContext>(option =>
             {
-                option.UseSqlServer(builder.Configuration.GetConnectionString("IPDb"));
+                option.UseSqlServer(builder.Configuration.GetConnectionString("IPAddressSQLConn"));
             });
 
             var app = builder.Build();

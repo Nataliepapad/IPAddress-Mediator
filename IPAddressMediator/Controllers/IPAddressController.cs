@@ -1,4 +1,6 @@
-﻿using IPAddressMediator.Models;
+﻿using IPAddressMediator.Commands;
+using IPAddressMediator.Entities;
+using IPAddressMediator.Models;
 using IPAddressMediator.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,11 +25,11 @@ namespace IPMediator.Controllers
             return model == null ? NotFound() : Ok(model); ;
         }
 
-        //[HttpPost("addIPAddress")]
-        //public async Task<ActionResult<IPAddress>> AddIPAddressToDb(IPAddress IPAddressModel)
-        //{
-        //    IPAddress model = await _mediator.Send(new AddIPAddress(IPAddressModel));
-        //    return Ok(model);
-        //}
+        [HttpPost("AddIPAddress")]
+        public async Task<ActionResult<IPAddress>> AddIPAddress(IPAddress ipAddress)
+        {
+            IPAddress model = await _mediator.Send(new AddIPAddress(ipAddress));
+            return Ok(model);
+        }
     }
 }

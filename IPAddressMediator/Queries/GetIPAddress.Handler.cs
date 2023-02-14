@@ -10,6 +10,7 @@ namespace IPAddressMediator.Queries
     {
         private readonly HttpClientResponse _clientResponse;
         private readonly HttpResponseConverter _responseConverter;
+
         public GetIPAddressHandler(HttpClientResponse clientResponse, HttpResponseConverter responseConverter)
         {
             _clientResponse = clientResponse;
