@@ -1,24 +1,35 @@
-﻿using Azure.Core;
-using IPAddressMediator.Data;
-using IPAddressMediator.Entities;
-using MediatR;
+﻿using IPAddressMediator.Entities;
+using IPAddressMediator.IP2CIntegration;
+using IPAddressMediator.Persistence;
 
 namespace IPAddressMediator.Commands
 {
-    public class AddIPAddress : IRequest<IPAddress>
+    public interface IAddIPAddress
     {
-        public readonly IPAddress _ipAddress;
+        Task<IPAddressEntity> AddIPAddressToDb(IP2CResponse model, string ip, int id);
+    }
 
-        public AddIPAddress(IPAddress ipAddress)
+    public class AddIPAddress : IAddIPAddress
+    {
+        private readonly IAddIPAddressPersistence _addIPAddressPercistence;
+
+        public AddIPAddress(IAddIPAddressPersistence addIPAddressPercistence)
         {
-            _ipAddress = new IPAddress
+            _addIPAddressPercistence = addIPAddressPercistence;
+        }
+
+        public async Task<IPAddressEntity> AddIPAddressToDb(IP2CResponse model, string ip, int id)
+        {
+            var ipAddress = new IPAddressEntity
             {
-                IP = ipAddress.IP,
-                CountryId = ipAddress.CountryId,
+                IP = ip,
+                CountryId = id,
                 CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now,
-                Country = ipAddress.Country,
+                UpdatedAt = DateTime.Now
             };
+
+            await _addIPAddressPercistence.Persist(ipAddress);
+            return ipAddress;
         }
     }
 }

@@ -1,5 +1,8 @@
+using IPAddressMediator.Commands;
 using IPAddressMediator.Data;
-using IPAddressMediator.HttpResponseIPAddress;
+using IPAddressMediator.IP2CIntegration;
+using IPAddressMediator.Persistence;
+using IPAddressMediator.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,11 +21,17 @@ namespace IPAddressMediator
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddSingleton(x => new HttpClient());
-            builder.Services.AddScoped<HttpClientResponse>();
-            builder.Services.AddScoped<HttpResponseConverter>();
+            builder.Services.AddScoped<IAddCountry, AddCountry>();
+            builder.Services.AddScoped<IAddIPAddress, AddIPAddress>();
+            builder.Services.AddScoped<IAddCountryPersistence, AddCountryPersistence>();
+            builder.Services.AddScoped<IAddIPAddressPersistence, AddIPAddressPersistence>();
+            builder.Services.AddScoped<IIP2CClient, IP2CClient>();
+            builder.Services.AddScoped<IResponseParser, ResponseParser>();
+            builder.Services.AddScoped<IIPAddressService, IPAddressService>();
+            builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
             // Add MediatR
-            builder.Services.AddMediatR(typeof(Program));
+            builder.Services.AddMediatR(typeof(Program).Assembly);
 
             builder.Services.AddDbContext<DataContext>(option =>
             {

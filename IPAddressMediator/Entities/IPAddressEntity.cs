@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPAddressMediator.Entities
 {
-    public class IPAddress
+    public class IPAddressEntity
     {
 
         public string IP { get; set; }
@@ -12,7 +12,7 @@ namespace IPAddressMediator.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int CountryId { get; set; } 
+        public int CountryId { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

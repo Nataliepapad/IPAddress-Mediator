@@ -1,6 +1,6 @@
 ﻿using IPAddressMediator.Entities;
 using Microsoft.EntityFrameworkCore;
-using IPAddress = IPAddressMediator.Entities.IPAddress;
+using IPAddressEntity = IPAddressMediator.Entities.IPAddressEntity;
 
 namespace IPAddressMediator.Data
 {
@@ -12,6 +12,6 @@ namespace IPAddressMediator.Data
         }
 
         public DbSet<Country> Countries { get; set; }
-        public DbSet<IPAddress> IPAddresses { get; set; }
+        public DbSet<IPAddressEntity> IPAddresses { get; set; }
     }
 }

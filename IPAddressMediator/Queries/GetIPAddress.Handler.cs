@@ -1,29 +1,25 @@
-﻿using Azure;
-using IPAddressMediator.HttpResponseIPAddress;
-using IPAddressMediator.Models;
+﻿using IPAddressMediator.IP2CIntegration;
+using IPAddressMediator.Services;
 using MediatR;
-using System.Net.Http;
 
 namespace IPAddressMediator.Queries
 {
-    public class GetIPAddressHandler : IRequestHandler<GetIPAddress, IPAddressModel>
+    public class GetIPAddressHandler : IRequestHandler<GetIPAddress, IP2CResponse>
     {
-        private readonly HttpClientResponse _clientResponse;
-        private readonly HttpResponseConverter _responseConverter;
+        private readonly IIPAddressService _ipAddressService;
 
-        public GetIPAddressHandler(HttpClientResponse clientResponse, HttpResponseConverter responseConverter)
+        public GetIPAddressHandler(IIPAddressService ipAddressService)
         {
-            _clientResponse = clientResponse;
-            _responseConverter = responseConverter;
+            _ipAddressService = ipAddressService;
         }
 
-        public async Task<IPAddressModel> Handle(GetIPAddress request, CancellationToken ct)
+        public async Task<IP2CResponse> Handle(GetIPAddress request, CancellationToken ct)
         {
-            var httpResponse = await _clientResponse.GetHttpClientResponse(request.IP);
-            var convertedModel = _responseConverter.SetHttpResponseConverter(httpResponse);
+            // We try to retrieve the IPAddressModel from the Database
+            var response = await _ipAddressService.GetIPAddressByIp(request.IP); ;
 
-            return convertedModel;
-
+            return response;
         }
     }
 }
+
