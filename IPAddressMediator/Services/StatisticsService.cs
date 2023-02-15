@@ -11,7 +11,6 @@ namespace IPAddressMediator.Services
 
     public class StatisticsService : IStatisticsService
     {
-
         public static string connectionString = "Server=.;Database=IPDb;Trusted_Connection=true;TrustServerCertificate=true;";
 
         public List<StatisticsModel> GetStatistics(string[] twoLetterCodes)

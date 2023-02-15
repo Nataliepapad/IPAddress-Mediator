@@ -2,12 +2,13 @@
 using IPAddressMediator.Data;
 using IPAddressMediator.IP2CIntegration;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace IPAddressMediator.Services
 {
     public interface IIPAddressService
     {
-        Task<IP2CResponse> GetIPAddressByIp(string ip);
+        Task<IP2CResponse> GetIPAddressByIp(IPAddress ip);
     }
 
     public class IPAddressService : IIPAddressService
@@ -26,7 +27,7 @@ namespace IPAddressMediator.Services
             _client = client;
         }
 
-        public async Task<IP2CResponse> GetIPAddressByIp(string ip)
+        public async Task<IP2CResponse> GetIPAddressByIp(IPAddress ip)
         {
             var response = await _dbContext.IPAddresses.Include(c => c.Country).FirstOrDefaultAsync(a => a.IP == ip); ;
 
@@ -39,7 +40,9 @@ namespace IPAddressMediator.Services
                     await _addCountry.AddCountryToDb(httpResponse);
                 }
 
-                await _addIPAddress.AddIPAddressToDb(httpResponse, ip, _dbContext.Countries.Single(x => x.TwoLetterCode == httpResponse.TwoLetterCode).Id);
+                var ID = _dbContext.Countries.Single(x => x.TwoLetterCode == httpResponse.TwoLetterCode).Id;
+
+                await _addIPAddress.AddIPAddressToDb(httpResponse, ip, ID);
 
                 return httpResponse;
             }

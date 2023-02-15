@@ -1,9 +1,11 @@
-﻿namespace IPAddressMediator.IP2CIntegration
+﻿using System.Net;
+
+namespace IPAddressMediator.IP2CIntegration
 {
 
     public interface IIP2CClient
     {
-        Task<IP2CResponse> GetIP(string ip);
+        Task<IP2CResponse> GetIP(IPAddress ip);
     }
 
     public class IP2CClient : IIP2CClient
@@ -17,7 +19,7 @@
             _responseParser = responseParser;
         }
 
-        public async Task<IP2CResponse> GetIP(string ip)
+        public async Task<IP2CResponse> GetIP(IPAddress ip)
         {
             var responseBody = await _httpClient.GetStringAsync("https://ip2c.org/" + ip);
             var response = _responseParser.Parse(responseBody);

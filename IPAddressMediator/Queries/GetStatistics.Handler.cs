@@ -1,5 +1,4 @@
-﻿using IPAddressMediator.Data;
-using IPAddressMediator.Models;
+﻿using IPAddressMediator.Models;
 using IPAddressMediator.Services;
 using MediatR;
 

@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net;
 
 namespace IPAddressMediator.Entities
 {
     public class IPAddressEntity
     {
 
-        public string IP { get; set; }
+        public IPAddress IP { get; set; }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

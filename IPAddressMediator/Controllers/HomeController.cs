@@ -3,10 +3,11 @@ using IPAddressMediator.Models;
 using IPAddressMediator.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace IPMediator.Controllers
 {
-    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class HomeController : ControllerBase
     {
@@ -18,17 +19,24 @@ namespace IPMediator.Controllers
         }
 
         [HttpGet("GetIPAddressModel")]
-        public async Task<ActionResult<IP2CResponse>> GetIPAddressModel(string ip)
+        public async Task<ActionResult<IP2CResponse>> GetIPAddressModel([FromQuery] string ip)
         {
-            var model = await _mediator.Send(new GetIPAddress(ip));
-            return Ok(model); ;
+            IPAddress address;
+            if (IPAddress.TryParse(ip.Trim(), out address))
+            {
+                var model = await _mediator.Send(new GetIPAddress(address));
+                return Ok(model);
+            }
+            else
+            {
+                return BadRequest("");
+            }
         }
 
         [HttpGet("GetStatistics")]
         public ActionResult<List<StatisticsModel>> GetStatistics([FromQuery] string[] twoLetterCodes)
         {
             var result = _mediator.Send(new GetStatistics(twoLetterCodes));
-
             return Ok(result);
         }
     }

@@ -1,13 +1,14 @@
 ﻿using IPAddressMediator.IP2CIntegration;
 using MediatR;
+using System.Net;
 
 namespace IPAddressMediator.Queries
 {
     public class GetIPAddress : IRequest<IP2CResponse>
     {
-        public string IP { get; }
+        public IPAddress IP { get; }
 
-        public GetIPAddress(string ip)
+        public GetIPAddress(IPAddress ip)
         {
             IP = ip;
         }
