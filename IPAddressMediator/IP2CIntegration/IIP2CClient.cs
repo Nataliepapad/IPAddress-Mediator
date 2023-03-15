@@ -21,7 +21,7 @@ namespace IPAddressMediator.IP2CIntegration
 
         public async Task<IP2CResponse> GetIP(IPAddress ip)
         {
-            var responseBody = await _httpClient.GetStringAsync("https://ip2c.org/" + ip);
+            var responseBody = await _httpClient.GetStringAsync(ip.ToString());
             var response = _responseParser.Parse(responseBody);
 
             return response;

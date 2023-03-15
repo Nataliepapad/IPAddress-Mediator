@@ -20,12 +20,15 @@ namespace IPAddressMediator
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddSingleton(x => new HttpClient());
             builder.Services.AddScoped<IAddCountry, AddCountry>();
             builder.Services.AddScoped<IAddIPAddress, AddIPAddress>();
             builder.Services.AddScoped<IAddCountryPersistence, AddCountryPersistence>();
             builder.Services.AddScoped<IAddIPAddressPersistence, AddIPAddressPersistence>();
-            builder.Services.AddScoped<IIP2CClient, IP2CClient>();
+            builder.Services.AddHttpClient<IIP2CClient, IP2CClient>(client => 
+            { 
+                 client.BaseAddress = new Uri("https://ip2c.org/"); 
+            });
+
             builder.Services.AddScoped<IResponseParser, ResponseParser>();
             builder.Services.AddScoped<IIPAddressService, IPAddressService>();
             builder.Services.AddScoped<IStatisticsService, StatisticsService>();
